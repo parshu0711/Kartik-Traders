@@ -12,6 +12,14 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
       - key: ADMIN_EMAILS
         value: bharatkarwani70@gmail.com,admin@kartiktraders.com,prashantmete0711@gmail.com
       - key: ADMIN_NAMES
@@ -20,13 +28,10 @@ services:
         value: 1111111111,2222222222,3333333333
       - key: ADMIN_PASSWORD
         value: "@Pass.07"
-      - key: FRONTEND_URL
-        sync: false
 
   # Frontend Service
-  - type: web
+  - type: static
     name: kartik-traders-frontend
-    env: static
     buildCommand: cd client && npm install && npm run build
     staticPublishPath: ./client/dist
     envVars:
