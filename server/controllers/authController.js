@@ -18,20 +18,37 @@ const generateToken = (id) => {
 const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    
+    // Validate input
     if (!email || !password) {
       return res.status(400).json({ message: 'Email and password are required' });
     }
+    
+    // Find admin user
     const user = await User.findOne({ email, role: 'admin' });
     if (!user) {
       return res.status(401).json({ message: 'Invalid admin credentials' });
     }
+    
+    // Check if user is active
+    if (!user.isActive) {
+      return res.status(403).json({ message: 'Admin account is deactivated' });
+    }
+    
+    // Verify password
     const passwordMatch = await user.comparePassword(password);
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Invalid admin credentials' });
     }
+    
+    // Update last login
+    user.lastLogin = new Date();
+    await user.save();
+    
     // Issue JWT token with user ID
     const token = generateToken(user._id);
-    res.json({ 
+    
+    return res.status(200).json({ 
       token, 
       admin: { 
         _id: user._id,
@@ -42,7 +59,7 @@ const adminLogin = async (req, res) => {
     });
   } catch (error) {
     console.error('Admin login error:', error);
-    res.status(500).json({ message: 'Server error' });
+    return res.status(500).json({ message: 'Server error' });
   }
 };
 

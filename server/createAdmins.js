@@ -4,14 +4,14 @@ const User = require('./models/User');
 require('dotenv').config();
 
 const admins = [
-  { name: 'Admin 1', email: 'Bharatkarwani70@gmail.com' },
-  { name: 'Admin 2', email: 'admin@kartiktraders.com' },
-  { name: 'Admin 3', email: 'prashantmete0711@gmail.com' }
+  { name: 'Admin 1', email: 'Bharatkarwani70@gmail.com', phone: '9876543210' },
+  { name: 'Admin 2', email: 'admin@kartiktraders.com', phone: '9876543211' },
+  { name: 'Admin 3', email: 'prashantmete0711@gmail.com', phone: '9876543212' }
 ];
 const password = '@Pass.07';
 
 async function seedAdmins() {
-  await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
   // Remove all admins except the three
   await User.deleteMany({ role: 'admin', email: { $nin: admins.map(a => a.email) } });
@@ -24,12 +24,14 @@ async function seedAdmins() {
         name: admin.name,
         email: admin.email,
         password: hash,
+        phone: admin.phone,
         role: 'admin'
       });
       console.log(`Created admin: ${admin.email}`);
     } else {
       user.name = admin.name;
       user.password = hash;
+      user.phone = admin.phone;
       user.role = 'admin';
       await user.save();
       console.log(`Updated admin: ${admin.email}`);

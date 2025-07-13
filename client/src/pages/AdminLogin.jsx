@@ -23,11 +23,25 @@ export default function AdminLogin() {
         body: JSON.stringify({ email, password }),
       });
       
-      const data = await response.json();
-      
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+        // Try to parse error response as JSON, fallback to text if it fails
+        let errorMessage = 'Login failed';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || 'Login failed';
+        } catch (parseError) {
+          // If JSON parsing fails, try to get text response
+          try {
+            const textResponse = await response.text();
+            errorMessage = textResponse || 'Login failed';
+          } catch (textError) {
+            errorMessage = `HTTP ${response.status}: Login failed`;
+          }
+        }
+        throw new Error(errorMessage);
       }
+      
+      const data = await response.json();
       
       localStorage.setItem('adminToken', data.token);
       localStorage.setItem('adminInfo', JSON.stringify(data.admin));
