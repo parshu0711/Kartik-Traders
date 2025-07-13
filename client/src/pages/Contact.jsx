@@ -83,24 +83,14 @@ const Contact = () => {
                 <div>
                   <h3 className="text-lg font-medium text-gray-900">Address</h3>
                   <p className="text-gray-600">
-                    123 Fashion Street<br />
-                    Mumbai, Maharashtra 400001<br />
-                    India
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                    <FaPhone className="text-primary-600" />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900">Phone</h3>
-                  <p className="text-gray-600">
-                    +91 98765 43210<br />
-                    +91 98765 43211
+                    Building No./Flat No.: C-145, S 1<br />
+                    Road/Street: Unnamed Road<br />
+                    Nearby Landmark: Misri Lal Kabuli<br />
+                    City/Town/Village: Jodhpur<br />
+                    District: Jodhpur<br />
+                    State: Rajasthan<br />
+                    PIN Code: 342014<br />
+                    Name Of Premises/Building: Vaishali Township/ SHIV GAURI APARTMENT
                   </p>
                 </div>
               </div>
@@ -114,24 +104,7 @@ const Contact = () => {
                 <div>
                   <h3 className="text-lg font-medium text-gray-900">Email</h3>
                   <p className="text-gray-600">
-                    bharatkarwani70@gmail.com<br />
-                    support@kartiktraders.com
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                    <FaClock className="text-primary-600" />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900">Business Hours</h3>
-                  <p className="text-gray-600">
-                    Monday - Friday: 9:00 AM - 8:00 PM<br />
-                    Saturday: 10:00 AM - 6:00 PM<br />
-                    Sunday: Closed
+                    bharatkarwani70@gmail.com
                   </p>
                 </div>
               </div>
@@ -254,7 +227,7 @@ const Contact = () => {
             <div className="text-center">
               <FaMapMarkerAlt className="text-4xl text-gray-400 mx-auto mb-4" />
               <p className="text-gray-600">Interactive Map Coming Soon</p>
-              <p className="text-sm text-gray-500">123 Fashion Street, Mumbai, Maharashtra 400001</p>
+              <p className="text-sm text-gray-500">C-145, S 1, Unnamed Road, Jodhpur, Rajasthan 342014</p>
             </div>
           </div>
         </div>

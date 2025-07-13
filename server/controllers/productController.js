@@ -132,8 +132,23 @@ const createProduct = async (req, res) => {
     console.log('=== CREATE PRODUCT DEBUG ===');
     console.log('Request body:', req.body);
     console.log('Request files:', req.files);
-    console.log('Request headers:', req.headers);
-    
+    console.log('Cloudinary configured:', isCloudinaryConfigured);
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: 'No images uploaded. Please select at least one image.' });
+    }
+
+    // Extract Cloudinary URLs or local paths
+    const images = req.files.map(file => {
+      if (file.secure_url) return file.secure_url;
+      if (file.path) return file.path;
+      return null;
+    }).filter(Boolean);
+
+    if (images.length < 1) {
+      return res.status(400).json({ message: 'Image upload failed. No valid image URLs received.' });
+    }
+
     const {
       name,
       description,
@@ -160,39 +175,16 @@ const createProduct = async (req, res) => {
       occasion
     } = req.body;
 
-    // req.files is an array of uploaded images
-    const images = req.files ? req.files.map(file => {
-      if (isCloudinaryConfigured) {
-        return file.secure_url;
-      } else {
-        // Return the full URL for local storage
-        const baseUrl = getBaseUrl();
-        return `${baseUrl}/uploads/${file.filename}`;
-      }
-    }) : [];
-    console.log('Processed images:', images);
-    
-    if (images.length < 1) {
-      console.log('No images found, returning error');
-      return res.status(400).json({ message: 'At least one product image is required' });
-    }
-
     // --- Size handling (optional) ---
     let parsedSizes = Array.isArray(sizes) ? sizes : (typeof sizes === 'string' ? JSON.parse(sizes) : []);
     let parsedSizeStock = Array.isArray(sizeStock) ? sizeStock : (typeof sizeStock === 'string' ? JSON.parse(sizeStock) : []);
-    
-    // Clean up sizes (remove empty/duplicate)
     parsedSizes = [...new Set(parsedSizes.map(s => s.trim()).filter(Boolean))];
-    
-    // Clean up sizeStock (remove duplicates and invalid entries)
     const seen = new Set();
     parsedSizeStock = parsedSizeStock.filter(ss => {
       if (!ss.size || seen.has(ss.size)) return false;
       seen.add(ss.size);
       return true;
     });
-    
-    // Only validate stock if sizeStock is provided
     if (parsedSizeStock.length > 0 && parsedSizeStock.some(ss => ss.stock < 0)) {
       return res.status(400).json({ message: 'Stock cannot be negative.' });
     }
@@ -231,7 +223,6 @@ const createProduct = async (req, res) => {
     res.status(201).json(createdProduct);
   } catch (error) {
     console.error('Create product error:', error);
-    console.error('Error stack:', error.stack);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
@@ -313,9 +304,9 @@ const updateProduct = async (req, res) => {
           if (isCloudinaryConfigured) {
             return file.secure_url;
           } else {
-            // Return the full URL for local storage
-            const baseUrl = getBaseUrl();
-            return `${baseUrl}/uploads/${file.filename}`;
+            // In production, this should not happen - all uploads go to Cloudinary
+            console.warn('Local storage fallback used - ensure Cloudinary is configured in production');
+            return file.path; // Just return the path for development
           }
         });
         console.log('New image URLs:', product.images);

@@ -139,22 +139,42 @@ export default function AdminDashboard() {
       const headers = { Authorization: `Bearer ${token}` };
 
       // Fetch dashboard stats
-      const statsResponse = await axios.get('/api/admin/stats', { headers });
-      setStats(statsResponse.data);
+      try {
+        const statsResponse = await axios.get('/api/admin/stats', { headers });
+        setStats(statsResponse.data);
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+        setStats({ totalRevenue: 0, totalOrders: 0, totalProducts: 0, totalCustomers: 0, recentOrders: [] });
+      }
 
       // Fetch products
-      const productsResponse = await axios.get('/api/products', { headers });
-      setProducts(productsResponse.data.products || []);
+      try {
+        const productsResponse = await axios.get('/api/products', { headers });
+        setProducts(productsResponse.data.products || []);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setProducts([]);
+      }
 
       // Fetch orders
-      const ordersResponse = await axios.get('/api/orders', { headers });
-      setOrders(ordersResponse.data.orders || []);
+      try {
+        const ordersResponse = await axios.get('/api/orders', { headers });
+        setOrders(ordersResponse.data.orders || []);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+        setOrders([]);
+      }
 
       // Fetch customers
-      const customersResponse = await axios.get('/api/users/admin/customers', { headers });
-      setCustomers(customersResponse.data.customers || []);
+      try {
+        const customersResponse = await axios.get('/api/users/admin/customers', { headers });
+        setCustomers(customersResponse.data.customers || []);
+      } catch (error) {
+        console.error('Error fetching customers:', error);
+        setCustomers([]);
+      }
     } catch (error) {
-      console.error('Error fetching dashboard data:', error);
+      console.error('Error in fetchDashboardData:', error);
       toast.error('Failed to load dashboard data');
     } finally {
       setLoading(false);
@@ -296,6 +316,23 @@ export default function AdminDashboard() {
       console.error('Error deleting product:', error);
       const message = error.response?.data?.message || 'Failed to delete product';
       toast.error(message);
+    }
+  };
+
+  const handleToggleActive = async (productId, currentStatus) => {
+    try {
+      await axios.put(`/api/products/${productId}`, {
+        isActive: !currentStatus
+      }, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
+      });
+      toast.success(`Product ${currentStatus ? 'deactivated' : 'activated'} successfully!`);
+      fetchDashboardData();
+    } catch (error) {
+      console.error('Error toggling product status:', error);
+      toast.error('Failed to update product status');
     }
   };
 

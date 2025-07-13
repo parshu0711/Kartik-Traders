@@ -25,10 +25,6 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# Uploads
-server/uploads/
-uploads/
-
 # Runtime data
 pids
 *.pid

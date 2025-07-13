@@ -1060,7 +1060,7 @@ const AdminProducts = () => {
                   </button>
                   <button
                     type="submit"
-                    disabled={loading || newProduct.sizes.length === 0}
+                    disabled={loading}
                     className="btn-primary"
                   >
                     {loading ? 'Adding...' : 'Add Product'}

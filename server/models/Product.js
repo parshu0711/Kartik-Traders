@@ -24,30 +24,7 @@ const productSchema = new mongoose.Schema({
   category: {
     type: String,
     required: [true, 'Product category is required'],
-    enum: [
-      // Clothing
-      'shirts', 't-shirts', 'polo-shirts', 'formal-shirts', 'casual-shirts',
-      'jeans', 'pants', 'trousers', 'formal-pants', 'casual-pants',
-      'jackets', 'blazers', 'sweaters', 'hoodies', 'sweatshirts',
-      'dresses', 'tops', 'kurtas', 'ethnic-wear', 'western-wear',
-      'suits', 'waistcoats', 'vests', 'shorts', 'track-pants',
-      
-      // Innerwear & Sleepwear
-      'innerwear', 'undergarments', 'briefs', 'boxers',
-      'sleepwear', 'pajamas', 'nightwear', 'loungewear',
-      
-      // Accessories
-      'belts', 'wallets', 'watches', 'sunglasses', 'jewelry',
-      'scarves', 'ties', 'handkerchiefs', 'socks', 'caps',
-      
-      // Footwear
-      'shoes', 'sneakers', 'formal-shoes', 'casual-shoes', 'sports-shoes',
-      'sandals', 'flip-flops', 'boots', 'loafers',
-      
-      // Bags & Luggage
-      'bags', 'backpacks', 'handbags', 'luggage',
-      'travel-bags', 'messenger-bags', 'duffle-bags'
-    ]
+    trim: true
   },
   brand: {
     type: String,
@@ -170,7 +147,7 @@ const productSchema = new mongoose.Schema({
   },
   occasion: {
     type: String,
-    enum: ['casual', 'formal', 'party', 'sports', 'ethnic', 'western', 'other'],
+    trim: true,
     default: 'casual'
   }
 }, {

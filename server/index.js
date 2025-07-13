@@ -75,14 +75,6 @@ app.use(limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Static files with CORS headers
-app.use('/uploads', (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-}, express.static('uploads'));
-
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
@@ -102,8 +94,9 @@ app.get('/api/health', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  fs.appendFileSync(path.join(logDirectory, 'error.log'), `${new Date().toISOString()} - ${err.stack}\n`);
+  console.error(err.stack || err.message || err);
+  const errorMessage = err.stack || err.message || err.toString() || 'Unknown error';
+  fs.appendFileSync(path.join(logDirectory, 'error.log'), `${new Date().toISOString()} - ${errorMessage}\n`);
   res.status(500).json({ 
     message: 'Something went wrong!',
     error: process.env.NODE_ENV === 'development' ? err.message : {}

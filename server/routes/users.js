@@ -7,7 +7,10 @@ const {
   deleteAddress,
   setDefaultAddress,
   updateAddress,
-  getCustomerOrders
+  getCustomerOrders,
+  getAllCustomers,
+  blockUser,
+  deleteUser
 } = require('../controllers/authController');
 
 // Placeholder for future user management routes
@@ -24,9 +27,9 @@ router.put('/addresses/:id/default', protect, setDefaultAddress);
 router.put('/addresses/:id', protect, updateAddress);
 
 // Admin user management routes
-router.get('/admin/customers', protect, admin, require('../controllers/authController').getAllCustomers);
+router.get('/admin/customers', protect, admin, getAllCustomers);
 router.get('/admin/customers/:id/orders', protect, admin, getCustomerOrders);
-router.put('/admin/users/:id/block', protect, admin, require('../controllers/authController').blockUser);
-router.delete('/admin/users/:id', protect, admin, require('../controllers/authController').deleteUser);
+router.put('/admin/users/:id/block', protect, admin, blockUser);
+router.delete('/admin/users/:id', protect, admin, deleteUser);
 
 module.exports = router; 
