@@ -9,5 +9,6 @@
     "/**": {
       "Cache-Control": "public, max-age=0, must-revalidate"
     }
-  }
+  },
+  "error_page": "index.html"
 } 

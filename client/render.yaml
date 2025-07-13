@@ -2,9 +2,12 @@ services:
   - type: web
     name: kartik-traders-frontend
     env: static
-    buildCommand: cd client && npm install && npm run build
-    staticPublishPath: ./client/dist
+    buildCommand: npm run build
+    staticPublishPath: ./dist
     routes:
       - type: rewrite
         source: /*
-        destination: /index.html 
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://kartik-traders.onrender.com 
