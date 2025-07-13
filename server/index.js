@@ -40,6 +40,7 @@ app.use(helmet({
 const allowedOrigins = process.env.NODE_ENV === 'production' 
   ? [
       process.env.FRONTEND_URL,
+      'https://kartik-traders-1.onrender.com',  // Your Render frontend
       'https://yourdomain.com',          // Replace with your Hostinger domain
       'https://www.yourdomain.com',      // Replace with your Hostinger domain (www)
       'https://your-app.vercel.app',     // Keep if using Vercel for frontend
@@ -56,12 +57,14 @@ app.use(cors({
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
+      console.log('CORS blocked origin:', origin);
+      console.log('Allowed origins:', allowedOrigins);
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
 // Rate limiting
