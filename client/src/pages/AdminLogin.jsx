@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -17,39 +18,19 @@ export default function AdminLogin() {
     setLoading(true);
     
     try {
-      const response = await fetch('/api/auth/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+      const response = await axios.post('/api/auth/admin/login', {
+        email,
+        password
       });
       
-      if (!response.ok) {
-        // Try to parse error response as JSON, fallback to text if it fails
-        let errorMessage = 'Login failed';
-        try {
-          const errorData = await response.json();
-          errorMessage = errorData.message || 'Login failed';
-        } catch (parseError) {
-          // If JSON parsing fails, try to get text response
-          try {
-            const textResponse = await response.text();
-            errorMessage = textResponse || 'Login failed';
-          } catch (textError) {
-            errorMessage = `HTTP ${response.status}: Login failed`;
-          }
-        }
-        throw new Error(errorMessage);
-      }
-      
-      const data = await response.json();
-      
-      localStorage.setItem('adminToken', data.token);
-      localStorage.setItem('adminInfo', JSON.stringify(data.admin));
+      localStorage.setItem('adminToken', response.data.token);
+      localStorage.setItem('adminInfo', JSON.stringify(response.data.admin));
       toast.success('Admin login successful!');
       navigate('/admin');
     } catch (err) {
-      setError(err.message);
-      toast.error(err.message);
+      const errorMessage = err.response?.data?.message || err.message || 'Login failed';
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }

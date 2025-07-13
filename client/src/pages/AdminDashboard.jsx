@@ -499,11 +499,11 @@ export default function AdminDashboard() {
     setExportingOrders(true);
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch('/api/orders/export/csv', {
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await axios.get('/api/orders/export/csv', {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'blob'
       });
-      if (!response.ok) throw new Error('Failed to export orders');
-      const blob = await response.blob();
+      const blob = new Blob([response.data]);
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
