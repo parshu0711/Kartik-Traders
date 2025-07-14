@@ -4,9 +4,9 @@ const User = require('./models/User');
 require('dotenv').config();
 
 const admins = [
-  { name: 'Admin 1', email: 'Bharatkarwani70@gmail.com', phone: '9876543210' },
-  { name: 'Admin 2', email: 'admin@kartiktraders.com', phone: '9876543211' },
-  { name: 'Admin 3', email: 'prashantmete0711@gmail.com', phone: '9876543212' }
+  { name: 'Admin 1', email: 'bharatkarwani70@gmail.com', phone: '1111111111' },
+  { name: 'Admin 2', email: 'admin@kartiktraders.com', phone: '2222222222' },
+  { name: 'Admin 3', email: 'prashantmete0711@gmail.com', phone: '3333333333' }
 ];
 const password = '@Pass.07';
 
