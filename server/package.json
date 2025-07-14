@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "build": "cd ../client && npm install && npm run build",
     "seed": "node seedData.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
