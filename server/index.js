@@ -41,10 +41,7 @@ const allowedOrigins = process.env.NODE_ENV === 'production'
   ? [
       process.env.FRONTEND_URL,
       'https://kartik-traders-1.onrender.com',  // Your Render frontend
-      'https://yourdomain.com',          // Replace with your Hostinger domain
-      'https://www.yourdomain.com',      // Replace with your Hostinger domain (www)
-      'https://your-app.vercel.app',     // Keep if using Vercel for frontend
-      'https://your-app.netlify.app'     // Keep if using Netlify for frontend
+          // Keep if using Netlify for frontend
     ].filter(Boolean) // Remove undefined values
   : ['http://localhost:3000', 'http://localhost:5173'];
 
