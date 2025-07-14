@@ -266,19 +266,28 @@ const createAdmin = async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
 
-    // Check if admin already exists
-    const adminExists = await User.findOne({ role: 'admin' });
-    if (adminExists) {
-      return res.status(400).json({ message: 'Admin already exists' });
-    }
-
     // Check if user exists
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).json({ message: 'User already exists' });
+      // Update existing user to admin
+      userExists.name = name;
+      userExists.password = password; // This will be hashed by the pre-save hook
+      userExists.phone = phone;
+      userExists.role = 'admin';
+      userExists.isActive = true;
+      await userExists.save();
+      
+      return res.status(200).json({
+        _id: userExists._id,
+        name: userExists.name,
+        email: userExists.email,
+        phone: userExists.phone,
+        role: userExists.role,
+        message: 'Admin user updated successfully'
+      });
     }
 
-    // Create admin user
+    // Create new admin user
     const admin = await User.create({
       name,
       email,
@@ -297,6 +306,35 @@ const createAdmin = async (req, res) => {
     });
   } catch (error) {
     console.error('Create admin error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Force update admin password
+// @route   POST /api/auth/force-update-admin
+// @access  Public (for development)
+const forceUpdateAdmin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    // Update user to admin and set new password
+    user.role = 'admin';
+    user.password = password; // This will be hashed by the pre-save hook
+    user.isActive = true;
+    await user.save();
+    
+    res.json({
+      message: 'Admin password updated successfully',
+      email: user.email,
+      role: user.role
+    });
+  } catch (error) {
+    console.error('Force update admin error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -593,6 +631,7 @@ module.exports = {
   getUserProfile,
   updateUserProfile,
   createAdmin,
+  forceUpdateAdmin,
   changePassword,
   forgotPassword,
   resetPassword,

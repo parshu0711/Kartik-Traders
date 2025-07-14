@@ -10,7 +10,8 @@ const {
   createAdmin,
   changePassword,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  forceUpdateAdmin
 } = require('../controllers/authController');
 
 // @route   POST /api/auth/register
@@ -24,6 +25,9 @@ router.post('/admin/login', adminLogin);
 
 // @route   POST /api/auth/create-admin
 router.post('/create-admin', createAdmin);
+
+// @route   POST /api/auth/force-update-admin
+router.post('/force-update-admin', forceUpdateAdmin);
 
 // @route   POST /api/auth/forgot-password
 router.post('/forgot-password', forgotPassword);
