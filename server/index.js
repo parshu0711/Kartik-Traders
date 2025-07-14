@@ -149,10 +149,14 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/kartik-tr
       ];
       const password = '@Pass.07';
       
+      console.log('🔧 Setting up admin accounts...');
+      
       for (const admin of admins) {
         let user = await User.findOne({ email: admin.email });
         const hash = await bcrypt.hash(password, 10);
+        
         if (!user) {
+          // Create new admin
           await User.create({
             name: admin.name,
             email: admin.email,
@@ -160,17 +164,19 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/kartik-tr
             phone: admin.phone,
             role: 'admin'
           });
-          console.log(`Created admin: ${admin.email}`);
+          console.log(`✅ Created admin: ${admin.email}`);
         } else {
+          // Force update existing admin password
           user.name = admin.name;
-          user.password = hash;
+          user.password = hash; // Force update password
           user.phone = admin.phone;
           user.role = 'admin';
+          user.isActive = true;
           await user.save();
-          console.log(`Updated admin: ${admin.email}`);
+          console.log(`✅ Updated admin password: ${admin.email}`);
         }
       }
-      console.log('Admin setup complete.');
+      console.log('🎉 Admin setup complete!');
     } catch (error) {
       console.error('Error setting up admins:', error);
     }
