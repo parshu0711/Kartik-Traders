@@ -12,7 +12,7 @@ async function createAdminOnDeployed() {
       name: 'Admin User',
       email: 'admin@kartiktraders.com',
       password: '@Pass.07',
-      phone: '1234567890'
+      phone: '2222222222'
     }, {
       headers: {
         'Content-Type': 'application/json'
