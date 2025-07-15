@@ -100,15 +100,22 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <FaMapMarkerAlt className="text-primary-400" />
                 <span className="text-gray-300 text-sm">
-                  123 Fashion Street, Mumbai, Maharashtra, India
+                  Building No./Flat No.: C-145, S 1<br />
+                    Road/Street: Unnamed Road<br />
+                    Nearby Landmark: Misri Lal Kabuli<br />
+                    City/Town/Village: Jodhpur<br />
+                    District: Jodhpur<br />
+                    State: Rajasthan<br />
+                    PIN Code: 342014<br />
+                    Name Of Premises/Building: Vaishali Township/ SHIV GAURI APARTMENT.
                 </span>
               </div>
-              <div className="flex items-center space-x-3">
+{/*               <div className="flex items-center space-x-3">
                 <FaPhone className="text-primary-400" />
                 <a href="tel:+919876543210" className="text-gray-300 text-sm hover:text-white transition-colors">
                   +91 98765 43210
                 </a>
-              </div>
+              </div> */}
               <div className="flex items-center space-x-3">
                 <FaEnvelope className="text-primary-400" />
                 <a href="mailto:bharatkarwani70@gmail.com" className="text-gray-300 text-sm hover:text-white transition-colors">
