@@ -71,12 +71,12 @@ async function debugAdminLogin() {
     // 5. Test creating a new admin if none exist
     if (adminUsers.length === 0) {
       console.log('\n5. No admin users found. Creating test admin...');
-      const hash = await bcrypt.hash(testPassword, 10);
+      
       const newAdmin = await User.create({
         name: 'Test Admin',
         email: 'admin@kartiktraders.com',
-        password: hash,
-        phone: '1234567890',
+        password: password,
+        phone: '1111111111',
         role: 'admin'
       });
       console.log(`✅ Created admin: ${newAdmin.email}`);
