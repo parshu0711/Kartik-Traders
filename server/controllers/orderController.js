@@ -177,21 +177,18 @@ const getMyOrders = async (req, res) => {
 // @access  Private/Admin
 const getOrders = async (req, res) => {
   try {
-    const pageSize = 10;
-    const page = Number(req.query.pageNumber) || 1;
-    
-    const count = await Order.countDocuments({});
     const orders = await Order.find({})
-      .populate('user', 'id name email phone')
-      .sort({ createdAt: -1 })
-      .limit(pageSize)
-      .skip(pageSize * (page - 1));
+  .populate('user', 'id name email phone')
+  .sort({ createdAt: -1 });
+
+  const count = orders.length;
+  const page = 1;
 
     // No need to populate shippingAddress as it's embedded, but ensure it's included in the response
     res.json({
       orders,
       page,
-      pages: Math.ceil(count / pageSize),
+      pages: 1,
       total: count
     });
   } catch (error) {
