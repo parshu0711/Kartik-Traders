@@ -93,26 +93,26 @@ app.get('/api/health', (req, res) => {
 });
 
 // Serve static files from the React app build directory
-if (process.env.NODE_ENV === 'production') {
-  const clientDistPath = path.join(__dirname, '../client/dist');
+// if (process.env.NODE_ENV === 'production') {
+//   const clientDistPath = path.join(__dirname, '../client/dist');
   
-  // Check if the client/dist directory exists
-  if (fs.existsSync(clientDistPath)) {
-    // Serve static files from the React app
-    app.use(express.static(clientDistPath));
+//   // Check if the client/dist directory exists
+//   if (fs.existsSync(clientDistPath)) {
+//     // Serve static files from the React app
+//     app.use(express.static(clientDistPath));
 
-    // Handle React routing, return all requests to React app
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(clientDistPath, 'index.html'));
-    });
-  } else {
-    console.log('Warning: client/dist directory not found. SPA routing disabled.');
-    // Fallback 404 handler for production without frontend
-    app.use('*', (req, res) => {
-      res.status(404).json({ message: 'Route not found' });
-    });
-  }
-}
+//     // Handle React routing, return all requests to React app
+//     app.get('*', (req, res) => {
+//       res.sendFile(path.join(clientDistPath, 'index.html'));
+//     });
+//   } else {
+//     console.log('Warning: client/dist directory not found. SPA routing disabled.');
+//     // Fallback 404 handler for production without frontend
+//     app.use('*', (req, res) => {
+//       res.status(404).json({ message: 'Route not found' });
+//     });
+//   }
+// }
 
 // Error handling middleware
 app.use((err, req, res, next) => {
