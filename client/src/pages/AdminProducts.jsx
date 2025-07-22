@@ -169,7 +169,7 @@ const AdminProducts = () => {
         return
       }
       
-      const response = await axios.get('/api/products', {
+      const response = await axios.get('/api/products?all=true', {
         headers: { Authorization: `Bearer ${token}` }
       })
       setProducts(response.data.products || [])
