@@ -57,6 +57,7 @@ const getBaseUrl = () => {
 // @access  Public
 const getProducts = async (req, res) => {
   try {
+    const showAll = req.query.all === 'true';
     const pageSize = 12;
     const page = Number(req.query.pageNumber) || 1;
     
@@ -89,15 +90,17 @@ const getProducts = async (req, res) => {
     }
 
     const count = await Product.countDocuments(filter);
-    const products = await Product.find(filter)
-      .limit(pageSize)
-      .skip(pageSize * (page - 1))
-      .sort({ createdAt: -1 });
+    const products = showAll
+      ? await Product.find(filter).sort({ createdAt: -1 })
+      : await Product.find(filter)
+        .limit(pageSize)
+        .skip(pageSize * (page - 1))
+        .sort({ createdAt: -1 });
 
     res.json({
       products,
       page,
-      pages: Math.ceil(count / pageSize),
+      pages: showAll ? 1 : Math.ceil(count / pageSize),
       total: count
     });
   } catch (error) {
